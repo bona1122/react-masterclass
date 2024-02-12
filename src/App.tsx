@@ -1,5 +1,5 @@
 import { createGlobalStyle } from "styled-components";
-import ToDoList from "./ToDoList";
+import ToDoList from "./components/ToDoList";
 
 const GlobalStyle = createGlobalStyle`
  html, body, div, span, applet, object, iframe,
@@ -55,7 +55,8 @@ table {
 body{
   font-family: 'Kanit', sans-serif;
   background-color: ${(props) => props.theme.bgColor};
-  color: ${(props) => props.theme.textColor};
+  /* color: ${(props) => props.theme.textColor}; */
+  color: white;  
 }
 a{
   text-decoration: none;
