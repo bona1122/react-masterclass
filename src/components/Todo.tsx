@@ -17,6 +17,9 @@ function Todo({ text, category, id }: ITodo) {
       ];
     });
   };
+  const onClickDelete = () => {
+    setToDos((prev) => prev.filter((todo) => todo.id !== id));
+  };
   return (
     <li>
       <span>{text}</span>
@@ -31,10 +34,11 @@ function Todo({ text, category, id }: ITodo) {
         </button>
       )}
       {category !== Categories.DONE && (
-        <button name={Categories.DONE } onClick={onClick}>
+        <button name={Categories.DONE} onClick={onClick}>
           Done
         </button>
       )}
+      <button onClick={onClickDelete}>delete</button>
     </li>
   );
 }
