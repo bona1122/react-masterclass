@@ -12,7 +12,7 @@ function CreateTodo() {
   const handleValid = ({ todo }: IForm) => {
     setValue("todo", "");
     setTodos((prev) => [
-      { id: Date.now(), text: todo, categoty: "TO_DO" },
+      { id: Date.now(), text: todo, category: "TO_DO" },
       ...prev,
     ]);
   };
