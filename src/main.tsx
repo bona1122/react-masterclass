@@ -59,8 +59,8 @@ table {
 body{
   font-family: 'Kanit', sans-serif;
   background-color: ${(props) => props.theme.bgColor};
-  /* color: ${(props) => props.theme.textColor}; */
-  color: white;  
+  color: black;  
+  line-height: 1.2;
 }
 a{
   text-decoration: none;
