@@ -1,7 +1,9 @@
 import { Droppable } from "react-beautiful-dnd";
 import DragabbleCard from "./DragabbleCard";
 import styled from "styled-components";
-import { useRef } from "react";
+import { set, useForm } from "react-hook-form";
+import { ITodo, todosState } from "../atoms";
+import { useSetRecoilState } from "recoil";
 
 const Wrapper = styled.div`
   padding-top: 10px;
@@ -36,20 +38,45 @@ const Title = styled.h2`
 `;
 
 interface IBoardProps {
-  todos: string[];
+  todos: ITodo[];
   boardId: string;
 }
 
+interface IForm {
+  todo: string;
+}
+
+const Form = styled.form`
+  width: 100%;
+  input {
+    width: 100%;
+  }
+`;
+
 function Board({ todos, boardId }: IBoardProps) {
-  const inputRef = useRef<HTMLInputElement>(null);
-  const onClick = () => {
-    inputRef.current?.focus();
+  const setTodos = useSetRecoilState(todosState);
+  const { register, setValue, handleSubmit } = useForm<IForm>();
+  const onValid = ({ todo }: IForm) => {
+    const newTodo = {
+      id: Date.now(),
+      text: todo,
+    };
+    setTodos((prevBoards) => {
+      console.log(prevBoards);
+      return { ...prevBoards, [boardId]: [...prevBoards[boardId], newTodo] };
+    });
+    setValue("todo", "");
   };
   return (
     <Wrapper>
       <Title>{boardId}</Title>
-      <input ref={inputRef} type="text" />
-      <button onClick={onClick}></button>
+      <Form onSubmit={handleSubmit(onValid)}>
+        <input
+          {...register("todo", { required: true })}
+          type="text"
+          placeholder={`Add task on ${boardId}`}
+        />
+      </Form>
       <Droppable droppableId={boardId}>
         {(provided, snapshot) => (
           <Area
@@ -59,7 +86,12 @@ function Board({ todos, boardId }: IBoardProps) {
             {...provided.droppableProps}
           >
             {todos.map((todo, index) => (
-              <DragabbleCard key={todo} index={index} todo={todo} />
+              <DragabbleCard
+                key={todo.id}
+                index={index}
+                todoId={todo.id}
+                todoText={todo.text}
+              />
             ))}
             {provided.placeholder}
           </Area>
